@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Data
 public class CommentResponse {
-    private Long id;
+    private String id;
     private Long postId;
     private Long userId;
     private Long repliedToUserId;

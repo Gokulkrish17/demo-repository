@@ -2,7 +2,6 @@ package com.Sadetechno.comment_module.Service;
 
 import com.Sadetechno.comment_module.Repository.PostRepository;
 import com.Sadetechno.comment_module.model.PostNotification;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +34,8 @@ public class PostNotificationService {
 
     }
 
-    @Transactional
-    public void deleteNotificationForPost(Long id, String type) {
+//    @Transactional
+    public void deleteNotificationForPost(String id, String type) {
         Optional<PostNotification> deletePostNotification = postRepository.findById(id);
 
         if(deletePostNotification.isPresent()){

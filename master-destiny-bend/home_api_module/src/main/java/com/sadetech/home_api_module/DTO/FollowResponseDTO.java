@@ -10,6 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FollowResponseDTO {
+    private String message;  // e.g., "Gokul has X followers" or "Gokul is following X people"
     private int count;       // Number of followers/following
+    private List<UserDTO> users;       // Number of followers/following
 }
 

@@ -28,7 +28,7 @@ public class ConversationController {
     }
 
     @GetMapping("/message/{id}")
-    public ResponseEntity<Optional<Message>> getMessage(@PathVariable Long id){
+    public ResponseEntity<Optional<Message>> getMessage(@PathVariable String  id){
         Optional<Message> message = conversationService.getMessageById(id);
         return ResponseEntity.ok(message);
     }
@@ -41,7 +41,7 @@ public class ConversationController {
 
     @DeleteMapping("/delete-for-everyone/{id}")
     public ResponseEntity<?> deleteMessageForEveryone(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam Long userId) {
 
         try {
@@ -54,7 +54,7 @@ public class ConversationController {
 
     @DeleteMapping("/delete-for-self/{id}")
     public ResponseEntity<?> deleteMessageForSelf(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestParam Long userId) {
 
         try {

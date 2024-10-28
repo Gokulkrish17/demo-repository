@@ -12,10 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class UsersManagementService {
@@ -93,7 +90,7 @@ public class UsersManagementService {
 
                     OurUsers ourUsersResult = usersRepo.save(ourUser);
 
-                    if (ourUsersResult.getId() > 0) {
+                    if (ourUsersResult.getId() == null) {
                         resp.setOurUsers(ourUsersResult);
                         resp.setMessage("User registered successfully");
                         resp.setStatusCode(201); // Created
@@ -138,7 +135,7 @@ public class UsersManagementService {
             response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()); // Set status code to 500 for general errors
         }
         return response;
-    }
+}
 
 
     public ReqRes refreshToken(ReqRes refreshTokenReqiest) {
@@ -310,8 +307,9 @@ public class UsersManagementService {
         return otpRepository.findAllByOrderByIdDesc();
 
     }
-    public Optional<String> findUserNameById(Integer id) {
+    public Optional<String> findUserNameById(String id) {
         Optional<OurUsers> user = usersRepo.findById(id);
         return user.map(OurUsers::getName);
     }
+
 }

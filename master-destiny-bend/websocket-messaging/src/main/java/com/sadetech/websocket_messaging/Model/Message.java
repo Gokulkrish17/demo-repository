@@ -1,38 +1,35 @@
 package com.sadetech.websocket_messaging.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection = "message")
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private Long senderId;
     private Long recipientId;
 
-    @Column(columnDefinition = "TEXT")
     private String content;
 
     private boolean isRead = false;
 
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime sentAt;
 
-    private LocalDateTime readAt;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "conversation_Id",referencedColumnName = "id")
+    @DBRef(lazy = true)
     @JsonIgnore
     private Conversation conversation;
 

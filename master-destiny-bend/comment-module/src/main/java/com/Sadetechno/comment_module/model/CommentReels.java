@@ -1,29 +1,28 @@
 package com.Sadetechno.comment_module.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection = "reels_comments") // Specify the MongoDB collection name
 public class CommentReels {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; // Use String for MongoDB ObjectId
 
     private Long reelsId;
     private Long userId;
 
-    @Column(length = 500)
     private String textContent;
 
-    @CreationTimestamp
+    @CreatedDate // Automatically store the creation date
     private LocalDateTime createdAt;
 }

@@ -7,6 +7,8 @@ import com.Sadetechno.like_module.Repository.ReelsNotificationRepository;
 import com.Sadetechno.like_module.Repository.StatusNotificationRepository;
 import com.Sadetechno.like_module.Service.*;
 import com.Sadetechno.like_module.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,8 @@ public class LikeController {
 
     @Autowired
     private ReelsNotificationRepository reelsNotificationRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(LikeController.class);
 
     @PostMapping("/toggle")
     public ResponseEntity<?> toggleLike(
@@ -100,8 +104,14 @@ public class LikeController {
 
     @GetMapping("/post/{postId}/users")
     public ResponseEntity<List<Long>> getUsersWhoLikedPost(@PathVariable Long postId) {
-        List<Long> userIds = likeService.getUserIdsWhoLikedPost(postId);
-        return new ResponseEntity<>(userIds, HttpStatus.OK);
+        try {
+            List<Long> userIds = likeService.getUserIdsWhoLikedPost(postId);
+            logger.info("List of users who liked the post {}",userIds);
+            return new ResponseEntity<>(userIds, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error in getting user ids is {}",e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/post/{postId}/user/{userId}")
@@ -146,7 +156,7 @@ public class LikeController {
         return new ReelsNotificationDTO(reelsNotifications,count);
     }
     @DeleteMapping("notification/{id}/{type}")
-    public ResponseEntity<String> deleteNotification(@PathVariable Long id,@PathVariable String type){
+    public ResponseEntity<String> deleteNotification(@PathVariable String id,@PathVariable String type){
         switch (type) {
             case "POST-LIKE" -> postNotificationService.deleteNotificationForPost(id, type);
             case "REEL-LIKE" -> reelsNotificationService.deleteNotificationForReels(id, type);

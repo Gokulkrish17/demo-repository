@@ -1,6 +1,5 @@
 package com.sadetech.websocket_messaging.Service;
 
-import com.sadetech.websocket_messaging.Controller.ChatController;
 import com.sadetech.websocket_messaging.Model.Conversation;
 import com.sadetech.websocket_messaging.Model.Message;
 import com.sadetech.websocket_messaging.Repository.ConversationRepository;
@@ -25,8 +24,6 @@ public class ChatService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @Autowired
-    private ChatController chatController;
 
     @Transactional
     public void saveMessage(Message message) {
@@ -66,52 +63,5 @@ public class ChatService {
         }
         return Optional.empty();
     }
-
-//    @Transactional
-//    public void deleteMessageForSelf(Long id, Long userId) {
-//        Optional<Message> optionalMessage = messageRepository.findById(id);
-//
-//        if (optionalMessage.isPresent()) {
-//            Message message = optionalMessage.get();
-//            if (message.getSenderId().equals(userId)) {
-//                message.setDeletedBySender(true);  // Mark as deleted by sender
-//            } else if (message.getRecipientId().equals(userId)) {
-//                message.setDeletedByRecipient(true);  // Mark as deleted by recipient
-//            }
-//
-//            // Save changes
-//            messageRepository.save(message);
-//
-//            // Notify the WebSocket topic that the message was deleted for the user
-//            Long conversationId = message.getConversation().getId();
-//            chatController.notifyMessageDeletion(conversationId, message.getId(), userId);
-//
-//            // If both sender and recipient deleted the message, remove it from the database
-//            if (message.isDeletedBySender() && message.isDeletedByRecipient()) {
-//                messageRepository.delete(message);
-//                chatController.notifyMessageDeletedForEveryone(conversationId, message.getId());
-//            }
-//        } else {
-//            throw new IllegalArgumentException("Message not found");
-//        }
-//    }
-//
-//    @Transactional
-//    public void deleteMessageForEveryone(Long id) {
-//        Optional<Message> optionalMessage = messageRepository.findById(id);
-//
-//        if (optionalMessage.isPresent()) {
-//            Message message = optionalMessage.get();
-//            Long conversationId = message.getConversation().getId();
-//
-//            // Delete the message from the database
-//            messageRepository.delete(message);
-//
-//            // Notify all participants in the conversation that the message was deleted for everyone
-//            chatController.notifyMessageDeletedForEveryone(conversationId, message.getId());
-//        } else {
-//            throw new IllegalArgumentException("Message not found");
-//        }
-//    }
 
 }

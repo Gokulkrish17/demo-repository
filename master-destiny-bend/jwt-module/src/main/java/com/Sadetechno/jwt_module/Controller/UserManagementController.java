@@ -122,7 +122,7 @@ public class UserManagementController {
     }
     @GetMapping("/user/{id}/username")
 //    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String> getUserNameById(@PathVariable Integer id) {
+    public ResponseEntity<String> getUserNameById(@PathVariable String id) {
         Optional<String> userName = usersManagementService.findUserNameById(id);
         return userName.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found"));

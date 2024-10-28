@@ -61,6 +61,4 @@ public class JWTUtils {
         return extractClaims(token, Claims::getExpiration).before(new Date());
     }
 
-
 }
-

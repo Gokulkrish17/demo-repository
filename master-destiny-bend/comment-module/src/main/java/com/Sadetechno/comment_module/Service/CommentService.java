@@ -170,7 +170,7 @@ public class CommentService {
                 .collect(Collectors.toSet()));
         return response;
     }
-    public void deleteComment(Long commentId, Long userId) {
+    public void deleteComment(String commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
@@ -180,4 +180,13 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
+
+    public List<CommentResponse> getCommentsByPostIdOnly(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream()
+                .map(this::mapToCommentResponse)
+                .collect(Collectors.toList());
+    }
+
+
 }

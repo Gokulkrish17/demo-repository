@@ -31,7 +31,7 @@ public class ConversationService {
         return conversationRepository.findByParticipants(participantOneId, participantTwoId);
     }
 
-    public Optional<Message> getMessageById(Long id){
+    public Optional<Message> getMessageById(String  id){
         Optional<Message> message = messageRepository.findById(id);
         if(message.isPresent()){
             return message;
@@ -50,7 +50,7 @@ public class ConversationService {
     }
 
     @Transactional
-    public void deleteMessageForSelf(Long id, Long userId) {
+    public void deleteMessageForSelf(String id, Long userId) {
         Optional<Message> optionalMessage = messageRepository.findById(id);
 
         if (optionalMessage.isPresent()) {
@@ -74,7 +74,7 @@ public class ConversationService {
     }
 
     @Transactional
-    public void deleteMessageForEveryone(Long id, Long userId) {
+    public void deleteMessageForEveryone(String id, Long userId) {
         Optional<Message> optionalMessage = messageRepository.findById(id);
 
         if (optionalMessage.isPresent()) {

@@ -1,29 +1,27 @@
 package com.Sadetechno.like_module.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection = "status_like")
 public class LikeStatus {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "status_id")
     private Long statusId;
 
-    @Column(name = "user_id")
     private Long userId;
 
-    @CreationTimestamp
+    @CreatedDate
     private LocalDateTime notificationTime;
 }

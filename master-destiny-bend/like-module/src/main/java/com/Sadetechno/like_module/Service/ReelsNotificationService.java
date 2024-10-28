@@ -1,9 +1,7 @@
 package com.Sadetechno.like_module.Service;
 
 import com.Sadetechno.like_module.Repository.ReelsNotificationRepository;
-import com.Sadetechno.like_module.model.PostNotification;
 import com.Sadetechno.like_module.model.ReelsNotification;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +26,7 @@ public class ReelsNotificationService {
         reelsNotificationRepository.save(reelsNotification);
     }
 
-    @Transactional
-    public void deleteNotificationForReels(Long id,String type){
+    public void deleteNotificationForReels(String id,String type){
         Optional<ReelsNotification> deleteReelsNotification = reelsNotificationRepository.findById(id);
         if(deleteReelsNotification.isPresent()){
             reelsNotificationRepository.deleteByIdAndType(id,type);

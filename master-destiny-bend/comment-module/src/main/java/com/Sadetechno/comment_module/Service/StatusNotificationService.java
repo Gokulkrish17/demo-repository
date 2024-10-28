@@ -3,7 +3,6 @@ package com.Sadetechno.comment_module.Service;
 import com.Sadetechno.comment_module.Repository.StatusRepository;
 import com.Sadetechno.comment_module.model.ReelsNotification;
 import com.Sadetechno.comment_module.model.StatusNotification;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +29,8 @@ public class StatusNotificationService {
 
     }
 
-    @Transactional
-    public void deleteNotificationForStatus(Long id, String type) {
+//    @Transactional
+    public void deleteNotificationForStatus(String id, String type) {
         Optional<StatusNotification> deleteStatusNotification = statusRepository.findById(id);
 
         if(deleteStatusNotification.isPresent()){

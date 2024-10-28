@@ -132,6 +132,7 @@ public class UserController {
         }
     }
 
+
     @PatchMapping("/{id}/profile-image")
     public ResponseEntity<User> updateProfileImage(@PathVariable Long id, @Valid @ModelAttribute ProfileDTO profileDTO) {
         try {

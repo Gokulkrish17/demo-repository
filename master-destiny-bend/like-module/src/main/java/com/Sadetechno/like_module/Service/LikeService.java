@@ -67,7 +67,7 @@ public class LikeService {
         return likeRepository.countByPostId(postId);
     }
     public List<Long> getUserIdsWhoLikedPost(Long postId) {
-        return likeRepository.findUserIdsByPostId(postId);
+        return likeRepository.findUserIdByPostId(postId);
     }
 
     public boolean hasUserLikedPost(Long postId, Long userId) {

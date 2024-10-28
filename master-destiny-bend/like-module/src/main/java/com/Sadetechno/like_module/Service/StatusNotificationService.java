@@ -1,9 +1,7 @@
 package com.Sadetechno.like_module.Service;
 
 import com.Sadetechno.like_module.Repository.StatusNotificationRepository;
-import com.Sadetechno.like_module.model.PostNotification;
 import com.Sadetechno.like_module.model.StatusNotification;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +27,7 @@ public class StatusNotificationService {
         statusNotificationRepository.save(statusNotification);
     }
 
-    @Transactional
-    public void deleteNotificationForStatus(Long id,String type){
+    public void deleteNotificationForStatus(String id,String type){
         Optional<StatusNotification> deleteStatusNotification = statusNotificationRepository.findById(id);
         if(deleteStatusNotification.isPresent()){
             statusNotificationRepository.deleteByIdAndType(id,type);

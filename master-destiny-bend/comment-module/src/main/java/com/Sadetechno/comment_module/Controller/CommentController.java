@@ -87,6 +87,12 @@ public class CommentController {
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
+    @GetMapping("/post/comments/{postId}")
+    public ResponseEntity<List<CommentResponse>> getCommentsByPostIdOnly(@PathVariable Long postId) {
+        List<CommentResponse> comments = commentService.getCommentsByPostIdOnly(postId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+
     @GetMapping("/replies/{parentId}")
     public ResponseEntity<List<CommentResponse>> getRepliesByParentId(@PathVariable Long parentId) {
         List<CommentResponse> replies = commentService.getRepliesByParentId(parentId);
@@ -94,7 +100,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId, @RequestParam Long userId) {
+    public ResponseEntity<?> deleteComment(@PathVariable String commentId, @RequestParam Long userId) {
         try {
             commentService.deleteComment(commentId, userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -172,7 +178,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/notification/{id}/{type}")
-    public ResponseEntity<String> deleteNotification(@PathVariable Long id,@PathVariable String type){
+    public ResponseEntity<String> deleteNotification(@PathVariable String id,@PathVariable String type){
         switch (type){
             case "POST-COMMENT", "COMMENT-REPLY" -> postNotificationService.deleteNotificationForPost(id, type);
             case "REELS-COMMENT" -> reelsNotificationService.deleteNotificationForReels(id, type);

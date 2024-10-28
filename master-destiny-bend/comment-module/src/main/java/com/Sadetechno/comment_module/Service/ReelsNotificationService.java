@@ -3,7 +3,6 @@ package com.Sadetechno.comment_module.Service;
 import com.Sadetechno.comment_module.Repository.ReelsRepository;
 import com.Sadetechno.comment_module.model.PostNotification;
 import com.Sadetechno.comment_module.model.ReelsNotification;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +29,8 @@ public class ReelsNotificationService {
 
     }
 
-    @Transactional
-    public void deleteNotificationForReels(Long id, String type) {
+//    @Transactional
+    public void deleteNotificationForReels(String id, String type) {
         Optional<ReelsNotification> deleteReelsNotification = reelsRepository.findById(id);
 
         if(deleteReelsNotification.isPresent()){
