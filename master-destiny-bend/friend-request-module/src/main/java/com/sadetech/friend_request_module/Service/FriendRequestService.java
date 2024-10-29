@@ -206,6 +206,7 @@ public class FriendRequestService {
 
         // Create a Map to hold the response data
         Map<String, Object> response = new HashMap<>();
+        response.put("userId",userId);
         response.put("friendCount", friends.size());
         response.put("friends", friends);
         logger.info("Got the Friend List of user {}", userId);
