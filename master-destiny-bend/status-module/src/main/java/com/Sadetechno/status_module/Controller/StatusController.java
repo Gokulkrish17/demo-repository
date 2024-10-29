@@ -5,9 +5,17 @@ import com.Sadetechno.status_module.Service.StatusService;
 import com.Sadetechno.status_module.model.Privacy;
 import com.Sadetechno.status_module.model.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -75,6 +83,38 @@ public class StatusController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/uploads/{fileName:.+}")
+    public ResponseEntity<Resource>serveFile(@PathVariable String fileName){
+        try {
+            Path filePath = Paths.get("static/uploads/").resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if(resource.exists()){
+                String contentType = determineContentType(fileName);
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .header(HttpHeaders.CONTENT_DISPOSITION,"inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            }else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    private String determineContentType(String fileName) {
+        if (fileName.toLowerCase().endsWith(".mp4")) {
+            return "video/mp4";
+        } else if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".webp")) {
+            return "image/jpeg";
+        } else if (fileName.toLowerCase().endsWith(".png")) {
+            return "image/png";
+        } else {
+            return "application/octet-stream";
         }
     }
 }
