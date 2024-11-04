@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -165,5 +166,11 @@ public class UserController {
             logger.error("Can't set banner image path {}",e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/getBy-email")
+    public ResponseEntity<Optional<User>> getUserByEmail(@RequestParam String email) {
+        Optional<User> user = userService.getUserByEmail(email);
+        return ResponseEntity.ok(user);
     }
 }

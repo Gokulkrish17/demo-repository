@@ -1,0 +1,121 @@
+# Application name and server port
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "http://localhost:3000"
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowed-headers: "*"
+            allow-credentials: true
+      routes:
+        - id: jwt-module
+          uri: lb://jwt-module
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: user-module
+          uri: lb://user-module
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: post-module
+          uri: lb://post-module
+          predicates:
+            - Path=/posts/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: like-module
+          uri: lb://like-module
+          predicates:
+            - Path=/likes/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: comment-module
+          uri: lb://comment-module
+          predicates:
+            - Path=/comments/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: status-module
+          uri: lb://status-module
+          predicates:
+            - Path=/statuses/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: follow-module
+          uri: lb://follow-module
+          predicates:
+            - Path=/follows/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: reels-module
+          uri: lb://reels-module
+          predicates:
+            - Path=/reels/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: friend-request-module
+          uri: lb://friend-request-module
+          predicates:
+            - Path=/friend-requests/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: websocket-messaging
+          uri: lb://websocket-messaging
+          predicates:
+            - Path=/ws/**
+            - Path=/web-socket/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: notification-module
+          uri: lb://notification-module
+          predicates:
+            - Path=/notification/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: home_api_module
+          uri: http://localhost:8093
+          predicates:
+            - Path=/home/api/**
+          filters:
+            - name: JwtAuthFilter
+
+        - id: permission-module
+          uri: http://localhost:8094
+          predicates:
+            - Path=/permissions/**
+          filters:
+            - name: JwtAuthFilter
+
+# Eureka configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true

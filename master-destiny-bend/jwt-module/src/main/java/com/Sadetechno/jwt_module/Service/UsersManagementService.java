@@ -126,16 +126,16 @@ public class UsersManagementService {
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully Logged In");
+            response.setStatusCode(HttpStatus.OK.value()); // Set status code to 200
         } catch (BadCredentialsException e) {
             response.setMessage("Login failed: Bad credentials");
-            response.setStatusCode(HttpStatus.UNAUTHORIZED.value()); // Set status code to 401
-            return response;
+            response.setStatusCode(HttpStatus.UNAUTHORIZED.value());
         } catch (Exception e) {
             response.setMessage("Login failed: " + e.getMessage());
-            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()); // Set status code to 500 for general errors
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return response;
-}
+    }
 
 
     public ReqRes refreshToken(ReqRes refreshTokenReqiest) {

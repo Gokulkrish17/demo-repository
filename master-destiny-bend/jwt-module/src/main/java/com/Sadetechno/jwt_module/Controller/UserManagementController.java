@@ -1,5 +1,6 @@
 package com.Sadetechno.jwt_module.Controller;
 
+import com.Sadetechno.jwt_module.Service.JWTUtils;
 import com.Sadetechno.jwt_module.Service.UsersManagementService;
 import com.Sadetechno.jwt_module.model.OtpEntity;
 import com.Sadetechno.jwt_module.model.OurUsers;
@@ -22,6 +23,9 @@ public class UserManagementController {
 
     @Autowired
     private UsersManagementService usersManagementService;
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     @PostMapping("/register")
     public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg) {

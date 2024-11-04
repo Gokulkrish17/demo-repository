@@ -15,8 +15,4 @@ public class JwtModuleApplication {
 		SpringApplication.run(JwtModuleApplication.class, args);
 	}
 
-//		protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//		return builder.sources(JwtModuleApplication.class);
-//	}
-
 }
