@@ -1,10 +1,9 @@
 package com.Sadetechno.like_module.Controller;
+import com.Sadetechno.like_module.DTO.CommentLikeNotificationDTO;
 import com.Sadetechno.like_module.DTO.PostNotificationDTO;
 import com.Sadetechno.like_module.DTO.ReelsNotificationDTO;
 import com.Sadetechno.like_module.DTO.StatusNotificationDTO;
-import com.Sadetechno.like_module.Repository.PostNotificationRepository;
-import com.Sadetechno.like_module.Repository.ReelsNotificationRepository;
-import com.Sadetechno.like_module.Repository.StatusNotificationRepository;
+import com.Sadetechno.like_module.Repository.*;
 import com.Sadetechno.like_module.Service.*;
 import com.Sadetechno.like_module.model.*;
 import org.slf4j.Logger;
@@ -52,6 +51,12 @@ public class LikeController {
 
     @Autowired
     private CommentLikeService commentLikeService;
+
+    @Autowired
+    private CommentLikeNotificationService commentLikeNotificationService;
+
+    @Autowired
+    private CommentLikeNotificationRepository commentLikeNotificationRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(LikeController.class);
 
@@ -168,12 +173,14 @@ public class LikeController {
         int count = reelsNotifications.size();
         return new ReelsNotificationDTO(reelsNotifications,count);
     }
+
     @DeleteMapping("notification/{id}/{type}")
     public ResponseEntity<String> deleteNotification(@PathVariable String id,@PathVariable String type){
         switch (type) {
             case "POST-LIKE" -> postNotificationService.deleteNotificationForPost(id, type);
             case "REEL-LIKE" -> reelsNotificationService.deleteNotificationForReels(id, type);
             case "STATUS-LIKE" -> statusNotificationService.deleteNotificationForStatus(id, type);
+            case "LIKE_COMMENT" -> commentLikeNotificationService.deleteNotificationForComment(id,type);
             default -> throw new IllegalArgumentException("No id found or type mismatch.");
         }
         return ResponseEntity.ok("Notification deleted");
@@ -184,11 +191,13 @@ public class LikeController {
         List<PostNotification> notifications = postNotificationRepository.findAll();
         List<ReelsNotification> notifications1 = reelsNotificationRepository.findAll();
         List<StatusNotification> notifications2 = statusNotificationRepository.findAll();
+        List<CommentLikeNotification> notifications3 = commentLikeNotificationRepository.findAll();
 
-        if(!notifications.isEmpty() && !notifications1.isEmpty() && !notifications2.isEmpty()){
+        if(!notifications.isEmpty() && !notifications1.isEmpty() && !notifications2.isEmpty() && !notifications3.isEmpty()){
             postNotificationRepository.deleteAll();
             reelsNotificationRepository.deleteAll();
             statusNotificationRepository.deleteAll();
+            commentLikeNotificationRepository.deleteAll();
         }else {
             throw new IllegalArgumentException("No notifications to delete.");
         }

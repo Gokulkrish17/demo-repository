@@ -24,6 +24,9 @@ public class AggregateService {
     private PostImageFeignClient postImageFeignClient;
 
     @Autowired
+    private SendRequestFeignClient sendRequestFeignClient;
+
+    @Autowired
     private PostVideoFeignClient postVideoFeignClient;
 
     public AggregateResponseDTO getAggregateData(Long userId) {
@@ -35,6 +38,7 @@ public class AggregateService {
             aggregateResponse.setFollowers(followerFeignClient.getFollowers(userId));
             aggregateResponse.setFollowing(followingFeignClient.getFollowing(userId));
             aggregateResponse.setFriendListAndCount(friendRequestFeignClient.getFriendListAndCount(userId));
+            aggregateResponse.setSentRequestDetails(sendRequestFeignClient.getSentRequestsDetails(userId));
             aggregateResponse.setImagePosts(postImageFeignClient.getImagePostsByUserId(userId));
             aggregateResponse.setVideoPosts(postVideoFeignClient.getVideoPostsByUserId(userId));
 

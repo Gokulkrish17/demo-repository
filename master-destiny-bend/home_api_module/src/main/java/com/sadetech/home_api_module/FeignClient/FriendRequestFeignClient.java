@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Map;
 
-@FeignClient(name = "friend-request-module")
+@FeignClient(name = "friend-request-module", contextId = "friends")
 public interface FriendRequestFeignClient {
     @GetMapping("/friend-requests/{userId}/friends")
      Map<String, Object>getFriendListAndCount(@PathVariable Long userId);

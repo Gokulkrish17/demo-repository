@@ -15,6 +15,7 @@ public class AggregateResponseDTO {
         private FollowResponseDTO followers;
         private FollowResponseDTO following;
         private Map<String, Object> friendListAndCount;
+        private Map<String,Object> sentRequestDetails;
         private List<ResponseDTO> imagePosts;
         private List<ResponseDTO> videoPosts;
 

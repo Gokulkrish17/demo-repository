@@ -27,6 +27,7 @@ public class NotificationAggregationService {
             case "POST-LIKE":
             case "REEL-LIKE":
             case "STATUS-LIKE":
+            case "LIKE_COMMENT":
                 likeFeignClient.deleteNotification(id, type);
                 break;
 

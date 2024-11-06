@@ -1,7 +1,6 @@
 package com.Sadetechno.like_module.DTO;
 
 import com.Sadetechno.like_module.model.ReelsNotification;
-import com.Sadetechno.like_module.model.StatusNotification;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
