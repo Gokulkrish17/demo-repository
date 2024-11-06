@@ -22,7 +22,7 @@ public class NotificationAggregationService {
     @Autowired
     private FriendRequestFeignClient friendRequestFeignClient;
 
-    public void deleteNotification(Long id, String type){
+    public void deleteNotification(String id, String type){
         switch (type){
             case "POST-LIKE":
             case "REEL-LIKE":

@@ -21,7 +21,7 @@ public class Conversation {
     private Long participantOneId;
     private Long participantTwoId;
 
-    @DBRef(lazy = true)
+    @DBRef
     private List<Message> messages = new ArrayList<>(); // Initialize the list
 }
 

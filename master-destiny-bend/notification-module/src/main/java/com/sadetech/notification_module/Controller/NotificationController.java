@@ -16,7 +16,7 @@ public class NotificationController {
     private NotificationAggregationService notificationAggregationService;
 
     @DeleteMapping("/{id}/{type}")
-    public ResponseEntity<String> deleteNotification(@PathVariable Long id, @PathVariable String type) {
+    public ResponseEntity<String> deleteNotification(@PathVariable String id, @PathVariable String type) {
         notificationAggregationService.deleteNotification(id, type);
         return ResponseEntity.ok("Notification deleted");
     }

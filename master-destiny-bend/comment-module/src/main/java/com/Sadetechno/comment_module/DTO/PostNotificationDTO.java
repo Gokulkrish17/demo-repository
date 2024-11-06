@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostNotificationDTO {
-    private List<PostNotification> notifications;
+    private List<PostNotification> notification;
     private int count;
 }

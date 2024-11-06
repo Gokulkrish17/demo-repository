@@ -50,6 +50,9 @@ public class LikeController {
     @Autowired
     private ReelsNotificationRepository reelsNotificationRepository;
 
+    @Autowired
+    private CommentLikeService commentLikeService;
+
     private static final Logger logger = LoggerFactory.getLogger(LikeController.class);
 
     @PostMapping("/toggle")
@@ -64,6 +67,16 @@ public class LikeController {
             return new ResponseEntity<>(like, HttpStatus.CREATED);
         }
     }
+
+    @PostMapping("/toggle-comment")
+    public ResponseEntity<String> toggleLikeForComment(
+            @RequestParam String commentId,
+            @RequestParam Long userId,
+            @RequestParam CommentLikeType commentLikeType) {
+
+        return commentLikeService.toggleLikeForComment(commentId, userId, commentLikeType);
+    }
+
 
     @PostMapping("/toggle-status")
     public ResponseEntity<?> toggleLikeForStatus(

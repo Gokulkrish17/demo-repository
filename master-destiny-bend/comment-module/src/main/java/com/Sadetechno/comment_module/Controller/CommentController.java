@@ -7,6 +7,8 @@ import com.Sadetechno.comment_module.Repository.StatusRepository;
 import com.Sadetechno.comment_module.Service.*;
 import com.Sadetechno.comment_module.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -23,6 +25,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,7 +59,9 @@ public class CommentController {
     @Autowired
     private StatusNotificationService statusNotificationService;
 
-    @PostMapping
+    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
+
+    @PostMapping("/comment-post")
     public ResponseEntity<CommentResponse> createComment(
             @RequestParam(value = "file",required = false) MultipartFile file,
             @RequestParam("request") String requestJson) throws IOException {
@@ -202,5 +207,40 @@ public class CommentController {
             throw new IllegalArgumentException("No notifications to delete.");
         }
         return ResponseEntity.ok("Notifications deleted.");
+    }
+
+    @GetMapping("/comment-status/{userId}")
+    public ResponseEntity<List<CommentStatus>> getCommentForStatus(@PathVariable Long userId){
+        try{
+            List<CommentStatus> commentStatuses = commentStatusService.getCommentForStatus(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(commentStatuses);
+        }catch (Exception e){
+            logger.error("User id not found , {}", e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/comment-reels/{reelsId}")
+    public ResponseEntity<List<CommentReels>> getCommentForReels(@PathVariable Long reelsId){
+        try{
+            List<CommentReels> commentReels = commentReelsService.getCommentForReels(reelsId);
+            return ResponseEntity.status(HttpStatus.OK).body(commentReels);
+        }catch (Exception e){
+            logger.error("Reel id not found , {}", e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/get-user/post/{id}")
+    public ResponseEntity<Optional<Comment>>getUserDetailsByCommentIdPost(@PathVariable String id){
+        Optional<Comment> comment = commentService.getUserDetailsByCommentId(id);
+        return ResponseEntity.ok(comment);
+    }
+    @GetMapping("/get-user/reels/{id}")
+    public ResponseEntity<Optional<CommentReels>>getUserDetailsByCommentIdReels(@PathVariable String id){
+        Optional<CommentReels> commentReels = commentReelsService.getUserDetailsByCommentId(id);
+        return ResponseEntity.ok(commentReels);
     }
 }

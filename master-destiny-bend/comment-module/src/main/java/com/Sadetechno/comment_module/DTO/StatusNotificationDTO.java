@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class StatusNotificationDTO {
 
-    private List<StatusNotification> notifications;
+    private List<StatusNotification> notification;
     private int count;
 }

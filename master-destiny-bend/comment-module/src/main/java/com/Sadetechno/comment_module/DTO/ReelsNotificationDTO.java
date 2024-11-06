@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ReelsNotificationDTO {
 
-    private List<ReelsNotification> notifications;
+    private List<ReelsNotification> notification;
     private int count;
 }

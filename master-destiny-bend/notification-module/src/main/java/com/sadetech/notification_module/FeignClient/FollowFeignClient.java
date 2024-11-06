@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "follow-module")
 public interface FollowFeignClient {
     @DeleteMapping("/follows/notification/{id}/{type}")
-    void deleteNotification(@PathVariable Long id, @PathVariable String type);
+    void deleteNotification(@PathVariable String id, @PathVariable String type);
 }

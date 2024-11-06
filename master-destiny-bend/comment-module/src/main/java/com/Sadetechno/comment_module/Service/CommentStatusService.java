@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentStatusService {
 
@@ -46,5 +48,9 @@ public class CommentStatusService {
 
             statusNotificationService.createNotificationForStatus(userId,message, userDetail.getEmail(),"STATUS-COMMENT", commentStatus.getStatusId(), userDetail.getName(), userDetail.getProfileImagePath(),statusOwnerId);
           return commentStatusRepository.save(commentStatus);
+    }
+
+    public List<CommentStatus> getCommentForStatus(Long userId) {
+       return commentStatusRepository.findByUserId(userId);
     }
 }

@@ -15,8 +15,4 @@ public class FollowModuleApplication {
 		SpringApplication.run(FollowModuleApplication.class, args);
 	}
 
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(FollowModuleApplication.class);
-	}
-
 }

@@ -29,7 +29,7 @@ public class Message {
     @CreatedDate
     private LocalDateTime sentAt;
 
-    @DBRef(lazy = true)
+    @DBRef
     @JsonIgnore
     private Conversation conversation;
 

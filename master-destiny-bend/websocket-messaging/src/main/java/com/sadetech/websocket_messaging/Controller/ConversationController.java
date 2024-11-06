@@ -21,26 +21,25 @@ public class ConversationController {
     public ResponseEntity<Conversation> getConversationByParticipants(
             @RequestParam Long participantOneId, @RequestParam Long participantTwoId) {
 
-        Optional<Conversation> conversation = conversationService.getConversationByParticipants(participantOneId, participantTwoId);
+        Optional<Conversation> conversation = conversationService.getConversationWithMessages(participantOneId, participantTwoId);
 
         return conversation.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/message/{id}")
-    public ResponseEntity<Optional<Message>> getMessage(@PathVariable String  id){
-        Optional<Message> message = conversationService.getMessageById(id);
-        return ResponseEntity.ok(message);
-    }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Conversation>> getAllConversation(){
-        List<Conversation> conversations = conversationService.getAllConversation();
-        return ResponseEntity.ok(conversations);
+    public ResponseEntity<List<Conversation>> getAllConversations() {
+        try {
+            List<Conversation> conversations = conversationService.getAllConversations();
+            return ResponseEntity.ok(conversations);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @DeleteMapping("/delete-for-everyone/{id}")
-    public ResponseEntity<?> deleteMessageForEveryone(
+    public ResponseEntity<String> deleteMessageForEveryone(
             @PathVariable String id,
             @RequestParam Long userId) {
 
@@ -53,7 +52,7 @@ public class ConversationController {
     }
 
     @DeleteMapping("/delete-for-self/{id}")
-    public ResponseEntity<?> deleteMessageForSelf(
+    public ResponseEntity<String> deleteMessageForSelf(
             @PathVariable String id,
             @RequestParam Long userId) {
 
@@ -64,5 +63,4 @@ public class ConversationController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 }
