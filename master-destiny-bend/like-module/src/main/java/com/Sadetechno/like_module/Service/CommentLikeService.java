@@ -7,11 +7,13 @@ import com.Sadetechno.like_module.FeignClient.UserFeignClient;
 import com.Sadetechno.like_module.Repository.CommentLikeRepository;
 import com.Sadetechno.like_module.model.CommentLike;
 import com.Sadetechno.like_module.model.CommentLikeType;
+import com.Sadetechno.like_module.model.LikeReels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -66,5 +68,21 @@ public class CommentLikeService {
 
             return ResponseEntity.ok("Liked your comment.");
         }
+    }
+
+    public List<CommentLike> getLikesByCommentId(String commentId) {
+        return commentLikeRepository.findByCommentId(commentId);
+    }
+
+    public long getLikeCountByCommentId(String commentId) {
+        return commentLikeRepository.countByCommentId(commentId);
+    }
+    public List<Long> getUserIdsWhoLikedComment(String commentId) {
+        return commentLikeRepository.findUserIdByCommentId(commentId);
+    }
+
+    public boolean hasUserLikedComment(String commentId, Long userId) {
+        Optional<CommentLike> existingLike = commentLikeRepository.findByCommentIdAndUserId(commentId, userId);
+        return existingLike.isPresent();
     }
 }

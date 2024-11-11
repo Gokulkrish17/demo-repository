@@ -85,14 +85,23 @@ public class UserService {
         }
 
         try {
+            // Save the user to generate the id
             User savedUser = userRepository.save(user);
+
+            // Now set the userid to the generated id
+            savedUser.setUserid(savedUser.getId());
+
+            // Save again to persist the userid
+            savedUser = userRepository.save(savedUser);
             log.info("Saved User: {}", savedUser);
             return savedUser;
+
         } catch (Exception e) {
             log.error("Unexpected error saving user", e);
             throw new RuntimeException("Unexpected error saving user: " + e.getMessage(), e);
         }
     }
+
 
     public User updateUser(Long id, UserCreationDTO userUpdateDTO) throws IOException {
         Optional<User> existingUserOptional = userRepository.findByUserid(id);

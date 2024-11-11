@@ -114,11 +114,49 @@ public class LikeController {
         return new ResponseEntity<>(likes, HttpStatus.OK);
     }
 
+    @GetMapping("/reels/{reelsId}")
+    public ResponseEntity<List<LikeReels>> getLikesByReelsId(@PathVariable Long reelsId){
+        List<LikeReels> likes = likeReelsService.getLikesByReelsId(reelsId);
+        return new ResponseEntity<>(likes,HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{statusId}")
+    public ResponseEntity<List<LikeStatus>> getLikesByStatusId(@PathVariable Long statusId){
+        List<LikeStatus> likes = likeStatusService.getLikesByStatusId(statusId);
+        return new ResponseEntity<>(likes,HttpStatus.OK);
+    }
+
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<List<CommentLike>> getLikesByCommentId(@PathVariable String commentId){
+        List<CommentLike> likes = commentLikeService.getLikesByCommentId(commentId);
+        return new ResponseEntity<>(likes,HttpStatus.OK);
+    }
+
     @GetMapping("/post/{postId}/count")
     public ResponseEntity<Long> getLikeCountByPostId(@PathVariable Long postId) {
         long count = likeService.getLikeCountByPostId(postId);
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
+
+    @GetMapping("/reels/{reelsId}/count")
+    public ResponseEntity<Long> getLikesCountByReelsId(@PathVariable Long reelsId){
+        long count = likeReelsService.getLikeCountByReelsId(reelsId);
+        return new ResponseEntity<>(count,HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{statusId}/count")
+    public ResponseEntity<Long> getLikesCountByStatusId(@PathVariable Long statusId){
+        long count = likeStatusService.getLikeCountByStatusId(statusId);
+        return new ResponseEntity<>(count,HttpStatus.OK);
+    }
+
+    @GetMapping("/comments/{commentId}/count")
+    public ResponseEntity<Long> getLikesCountByCommentId(@PathVariable String commentId){
+        long count = commentLikeService.getLikeCountByCommentId(commentId);
+        return new ResponseEntity<>(count,HttpStatus.OK);
+    }
+
+    { /*
 
     @GetMapping("/post/{postId}/users")
     public ResponseEntity<List<Long>> getUsersWhoLikedPost(@PathVariable Long postId) {
@@ -131,6 +169,42 @@ public class LikeController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("/reels/{reelsId}/users")
+    public ResponseEntity<List<Long>> getUserIdsWhoLikedReels(@PathVariable Long reelsId){
+        try {
+            List<Long> userIds = likeReelsService.getUserIdsWhoLikedReels(reelsId);
+            logger.info("List of users who liked the reels {}",userIds);
+            return new ResponseEntity<>(userIds, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error in getting user ids of reels {}",e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/status/{statusId}/users")
+    public ResponseEntity<List<Long>> getUserIdsWhoLikedStatus(@PathVariable Long statusId){
+        try {
+            List<Long> userIds = likeStatusService.getUserIdsWhoLikedStatus(statusId);
+            logger.info("List of users who liked the status {}",userIds);
+            return new ResponseEntity<>(userIds, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error in getting user ids of status {}",e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/comments/{commentId}/users")
+    public ResponseEntity<List<Long>> getUserIdsWhoLikedComments(@PathVariable String commentId){
+        try {
+            List<Long> userIds = commentLikeService.getUserIdsWhoLikedComment(commentId);
+            logger.info("List of users who liked the comments {}",userIds);
+            return new ResponseEntity<>(userIds, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error in getting user ids of comment {}",e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+    */ }
 
     @GetMapping("/post/{postId}/user/{userId}")
     public ResponseEntity<Boolean> hasUserLikedPost(
@@ -138,6 +212,33 @@ public class LikeController {
             @PathVariable Long userId) {
 
         boolean hasLiked = likeService.hasUserLikedPost(postId, userId);
+        return new ResponseEntity<>(hasLiked, HttpStatus.OK);
+    }
+
+    @GetMapping("/reels/{reelsId}/user/{userId}")
+    public ResponseEntity<Boolean> hasUserLikedReels(
+            @PathVariable Long reelsId,
+            @PathVariable Long userId) {
+
+        boolean hasLiked = likeReelsService.hasUserLikedReel(reelsId, userId);
+        return new ResponseEntity<>(hasLiked, HttpStatus.OK);
+    }
+
+    @GetMapping("/status/{statusId}/user/{userId}")
+    public ResponseEntity<Boolean> hasUserLikedStatus(
+            @PathVariable Long statusId,
+            @PathVariable Long userId) {
+
+        boolean hasLiked = likeStatusService.hasUserLikedStatus(statusId, userId);
+        return new ResponseEntity<>(hasLiked, HttpStatus.OK);
+    }
+
+    @GetMapping("/comments/{commentId}/user/{userId}")
+    public ResponseEntity<Boolean> hasUserLikedComment(
+            @PathVariable String commentId,
+            @PathVariable Long userId) {
+
+        boolean hasLiked = commentLikeService.hasUserLikedComment(commentId, userId);
         return new ResponseEntity<>(hasLiked, HttpStatus.OK);
     }
 

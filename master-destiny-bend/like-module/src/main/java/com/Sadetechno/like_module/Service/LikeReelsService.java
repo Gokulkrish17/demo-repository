@@ -4,10 +4,12 @@ import com.Sadetechno.like_module.DTO.UserDTO;
 import com.Sadetechno.like_module.FeignClient.ReelsFeignClient;
 import com.Sadetechno.like_module.FeignClient.UserFeignClient;
 import com.Sadetechno.like_module.Repository.LikeReelsRepository;
+import com.Sadetechno.like_module.model.Like;
 import com.Sadetechno.like_module.model.LikeReels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +56,21 @@ public class LikeReelsService {
             }
            return savedLikeReels;
         }
+    }
+
+    public List<LikeReels> getLikesByReelsId(Long reelsId) {
+        return likeReelsRepository.findByReelsId(reelsId);
+    }
+
+    public long getLikeCountByReelsId(Long reelsId) {
+        return likeReelsRepository.countByReelsId(reelsId);
+    }
+    public List<Long> getUserIdsWhoLikedReels(Long reelsId) {
+        return likeReelsRepository.findUserIdByReelsId(reelsId);
+    }
+
+    public boolean hasUserLikedReel(Long reelsId, Long userId) {
+        Optional<LikeReels> existingLike = likeReelsRepository.findByReelsIdAndUserId(reelsId, userId);
+        return existingLike.isPresent();
     }
 }

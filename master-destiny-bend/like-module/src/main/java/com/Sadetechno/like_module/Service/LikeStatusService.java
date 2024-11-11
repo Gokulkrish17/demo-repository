@@ -4,12 +4,14 @@ import com.Sadetechno.like_module.DTO.UserDTO;
 import com.Sadetechno.like_module.FeignClient.StatusFeignClient;
 import com.Sadetechno.like_module.FeignClient.UserFeignClient;
 import com.Sadetechno.like_module.Repository.LikeStatusRepository;
+import com.Sadetechno.like_module.model.LikeReels;
 import com.Sadetechno.like_module.model.LikeStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -67,5 +69,21 @@ public class LikeStatusService {
 
             return likeStatusRepository.save(likeStatus);
         }
+    }
+
+    public List<LikeStatus> getLikesByStatusId(Long statusId) {
+        return likeStatusRepository.findByStatusId(statusId);
+    }
+
+    public long getLikeCountByStatusId(Long statusId) {
+        return likeStatusRepository.countByStatusId(statusId);
+    }
+    public List<Long> getUserIdsWhoLikedStatus(Long statusId) {
+        return likeStatusRepository.findUserIdByStatusId(statusId);
+    }
+
+    public boolean hasUserLikedStatus(Long statusId, Long userId) {
+        Optional<LikeStatus> existingLike = likeStatusRepository.findByStatusIdAndUserId(statusId, userId);
+        return existingLike.isPresent();
     }
 }

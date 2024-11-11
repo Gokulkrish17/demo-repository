@@ -14,4 +14,3 @@ public class FollowResponseDTO {
     private int count;       // Number of followers/following
     private List<UserDTO> users;       // Number of followers/following
 }
-
