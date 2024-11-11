@@ -69,17 +69,22 @@ public class CommentService {
         String name = userDTO.getName();
         String profileImagePath = userDTO.getProfileImagePath();
 
-        // Check if the comment is a reply to another comment (parentId exists)
         if (request.getParentId() != null) {
-            // Fetch parent comment
+            // The comment is a reply to an existing comment
             Comment parentComment = commentRepository.findById(request.getParentId())
                     .orElseThrow(() -> new IllegalArgumentException("Parent comment not found"));
 
+            // Set the parent comment and parent ID name
             comment.setParentComment(parentComment);
-
-            // Set parent ID's user name
             UserDTO parentUserDTO = fetchUserById(parentComment.getUserId());
             comment.setParentIdName(parentUserDTO.getName());
+
+            // Save the reply comment to get its ID generated
+            Comment savedReply = commentRepository.save(comment);
+
+            // Add the reply to the parent's replies set and save the parent comment
+            parentComment.getReplies().add(savedReply);
+            commentRepository.save(parentComment);
 
             // Create a reply notification
             String replyMessage = " replied to your comment.";
@@ -96,10 +101,11 @@ public class CommentService {
                     postOwnerId
             );
             logger.info("Reply notification sent to userId: {}", parentComment.getUserId());
+
         } else {
-            // New comment on a post, notify the post owner
+            // The comment is a new comment on the post
             Long postOwnerId = postFeignClient.getPostWithUserDetails(comment.getPostId()).getUserId();
-            String commentMessage =" commented on your post.";
+            String commentMessage = " commented on your post.";
             postNotificationService.createNotification(
                     comment.getUserId(),
                     commentMessage,
@@ -112,12 +118,15 @@ public class CommentService {
                     postOwnerId
             );
             logger.info("Comment notification sent to post owner.");
+
+            // Save the new comment directly
+            commentRepository.save(comment);
         }
 
-        // Save the comment and return the response
-        Comment savedComment = commentRepository.save(comment);
-        return mapToCommentResponse(savedComment);
+        // Return the response for the created comment
+        return mapToCommentResponse(comment);
     }
+
 
     /**
      * Fetches the user details using Feign Client and handles possible errors.
@@ -192,6 +201,4 @@ public class CommentService {
     public Optional<Comment> getUserDetailsByCommentId(String id){
          return commentRepository.findById(id);
     }
-
-
 }

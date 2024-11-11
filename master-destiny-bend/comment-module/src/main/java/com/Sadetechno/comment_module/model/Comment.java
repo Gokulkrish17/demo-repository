@@ -2,6 +2,7 @@ package com.Sadetechno.comment_module.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,13 +31,15 @@ public class Comment {
     @CreatedDate // This will store the created date automatically
     private LocalDateTime createdAt;
 
-    @DBRef(lazy = true) // Use DBRef for referencing another document
+    @DBRef     // Use DBRef for referencing another document
+    @EqualsAndHashCode.Exclude
     private Comment parentComment;
 
     private String parentIdName;
 
     private String imagePath;
 
-    @DBRef(lazy = true) // Use DBRef for replies if they are stored in a separate collection
+    @DBRef      // Use DBRef for replies if they are stored in a separate collection
+    @EqualsAndHashCode.Exclude
     private Set<Comment> replies = new HashSet<>();
 }

@@ -12,4 +12,5 @@ public interface CommentRepository extends MongoRepository<Comment, String > {
     List<Comment> findByPostIdAndParentCommentIsNull(Long postId);
 
     List<Comment> findByPostId(Long postId);
+
 }
