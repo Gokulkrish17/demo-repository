@@ -22,7 +22,6 @@ public class ResponseDTO {
     private String description;
     private String imageUrl;
     private String videoUrl;
-    private String text;
     private String privacySetting;
     private Date createdAt;
     private PostType postType;

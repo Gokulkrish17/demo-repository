@@ -63,6 +63,7 @@ public class CommentService {
         comment.setRepliedToUserId(request.getRepliedToUserId());
         comment.setTextContent(request.getTextContent());
         comment.setCreatedAt(LocalDateTime.now());
+        comment.setName(userFeignClient.getUserById(request.getUserId()).getName());
 
         // Fetch user information for comment userId
         UserDTO userDTO = fetchUserById(request.getUserId());
@@ -169,6 +170,7 @@ public class CommentService {
         response.setId(comment.getId());
         response.setPostId(comment.getPostId());
         response.setUserId(comment.getUserId());
+        response.setName(userDTO.getName());
         response.setRepliedToUserId(comment.getRepliedToUserId());
         response.setTextContent(comment.getTextContent());
         response.setImagePath(comment.getImagePath());

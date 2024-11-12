@@ -24,6 +24,7 @@ public class Comment {
 
     private Long postId;
     private Long userId;
+    private String name;
     private Long repliedToUserId;
 
     private String textContent;

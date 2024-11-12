@@ -41,12 +41,11 @@ public class PostController {
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
             @RequestParam(value = "videoFile", required = false) MultipartFile videoFile,
-            @RequestParam(value = "text", required = false) String text,
             @RequestParam(value = "privacySetting", required = false, defaultValue = "PUBLIC") String privacySetting,
             @RequestParam(value = "postVisibility",required = false,defaultValue = "PERSONAL")String postVisibility) {
 
         try {
-            Post post = postService.createPost(userId, postType, imageFile, videoFile, text, description, privacySetting,postVisibility);
+            Post post = postService.createPost(userId, postType, imageFile, videoFile, description, privacySetting,postVisibility);
             return new ResponseEntity<>(post, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             logger.error("Got 400 error because of {}",e.getMessage());

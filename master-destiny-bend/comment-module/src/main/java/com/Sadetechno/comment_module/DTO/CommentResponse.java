@@ -9,6 +9,7 @@ public class CommentResponse {
     private String id;
     private Long postId;
     private Long userId;
+    private String name;
     private Long repliedToUserId;
     private String textContent;
     private String imagePath;

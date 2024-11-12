@@ -14,13 +14,23 @@ import java.util.List;
 public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Config> {
 
     private static final List<String> EXCLUDED_PATHS = List.of(
-            "/api/auth/register",
-            "/api/auth/login",
-            "/api/auth/verifyOtp",
-            "/api/auth/otp",
-            "/api/auth/forgot-password",
-            "/api/auth/reset-password"
+            "^/api/auth/register",
+            "^/api/auth/login",
+            "^/api/auth/verifyOtp",
+            "^/api/auth/otp",
+            "^/api/auth/forgot-password",
+            "^/api/auth/reset-password",
+            "^/api/auth/users/descending",
+            "^/api/auth/otps/descending",
+            "^/api/users.*",
+            "/api/users/uploads.*",
+            "^/uploads.*"
     );
+
+    private boolean isExcludedPath(String path) {
+        return EXCLUDED_PATHS.stream().anyMatch(pattern -> path.matches(pattern));
+    }
+
 
     private final String secretKey = "843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3"; // Replace with your actual secret key
 
@@ -61,9 +71,9 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
         };
     }
 
-    private boolean isExcludedPath(String path) {
-        return EXCLUDED_PATHS.stream().anyMatch(path::startsWith);
-    }
+//    private boolean isExcludedPath(String path) {
+//        return EXCLUDED_PATHS.stream().anyMatch(path::startsWith);
+//    }
 
     private boolean isTokenValid(String token) {
         try {

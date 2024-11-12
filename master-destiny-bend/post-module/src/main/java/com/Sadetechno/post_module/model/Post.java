@@ -21,7 +21,6 @@ public class Post {
     private  String description;
     private String imageUrl;
     private String videoUrl;
-    private String text;
 
     @Enumerated(EnumType.STRING)
     private PostVisibility postVisibility;

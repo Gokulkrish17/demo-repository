@@ -42,6 +42,13 @@ public class ConversationService {
         if (conversations.isEmpty()) {
             throw new IllegalArgumentException("No conversations found");
         }
+
+        // Fetch and set messages for each conversation
+        conversations.forEach(conversation -> {
+            List<Message> messages = messageRepository.findByConversationId(conversation.getId());
+            conversation.setMessages(messages);
+        });
+
         return conversations;
     }
 

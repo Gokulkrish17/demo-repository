@@ -38,7 +38,9 @@ public class SecurityConfig {
                                 "/api/auth/login",
                                 "/api/auth/forgot-password",
                                 "/api/auth/reset-password",
-                                "/api/auth/verifyOtp" ).permitAll()
+                                "/api/auth/verifyOtp",
+                                "/api/auth/users/descending",
+                                "/api/auth/otps/descending").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
