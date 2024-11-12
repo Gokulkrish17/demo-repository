@@ -15,12 +15,35 @@ public class PermissionService {
     @Autowired
     private PermissionRepository permissionRepository;
 
-    public Permission grantPermission(Long userId, PermissionRequired permission, boolean status){
-        Permission permission1 = new Permission();
-        permission1.setUserId(userId);
-        permission1.setPermission(permission);
-        permission1.setStatus(status);
-        return permissionRepository.save(permission1);
+
+    public String grantPermission(Permission permissionRequest) {
+            Optional<Permission> existingPermissionOpt = permissionRepository.findByUserIdAndPermission(
+                    permissionRequest.getUserId(),
+                    permissionRequest.getPermission()
+            );
+
+            if (existingPermissionOpt.isPresent()) {
+                Permission existingPermission = existingPermissionOpt.get();
+
+                // Check if the permission status is already as requested
+                if (existingPermission.isStatus() == permissionRequest.isStatus()) {
+                    return "Permission already " + (existingPermission.isStatus() ? "granted" : "restricted") + ".";
+                }
+
+                // Update the status if the request is different
+                existingPermission.setStatus(permissionRequest.isStatus());
+                permissionRepository.save(existingPermission);
+                return "Permission status updated to " + (permissionRequest.isStatus() ? "granted" : "restricted") + ".";
+            }
+
+            // If permission does not exist, create a new one
+            Permission newPermission = new Permission();
+            newPermission.setUserId(permissionRequest.getUserId());
+            newPermission.setPermission(permissionRequest.getPermission());
+            newPermission.setStatus(permissionRequest.isStatus());
+
+            permissionRepository.save(newPermission);
+            return "New permission " + (permissionRequest.isStatus() ? "granted" : "restricted") + ".";
     }
 
     public Permission updateStatus(Long id, boolean status){

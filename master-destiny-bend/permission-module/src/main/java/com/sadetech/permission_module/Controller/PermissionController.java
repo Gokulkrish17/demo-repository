@@ -17,20 +17,27 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Permission> createPermission(
-            @PathVariable Long userId,
-            @RequestParam PermissionRequired permission,
-            @RequestParam boolean status) {
+    @PostMapping("/grant")
+    public ResponseEntity<String> createPermission(@RequestBody Permission permission) {
         try {
-            Permission createdPermission = permissionService.grantPermission(userId, permission, status);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPermission);
+            String resultMessage = permissionService.grantPermission(permission);
+
+            // Check the message to determine the response status
+            if (resultMessage.contains("already")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(resultMessage);
+            } else if (resultMessage.contains("updated")) {
+                return ResponseEntity.status(HttpStatus.OK).body(resultMessage);
+            } else {
+                return ResponseEntity.status(HttpStatus.CREATED).body(resultMessage);
+            }
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input provided.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
     }
+
 
     @PatchMapping("/update-status/{id}")
     public ResponseEntity<Permission>updateStatus(@PathVariable Long id, @RequestParam boolean status){

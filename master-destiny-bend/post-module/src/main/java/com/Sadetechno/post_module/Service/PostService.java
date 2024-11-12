@@ -33,7 +33,7 @@ public class PostService {
     @Autowired
     private FileUploadService fileUploadService; // Injecting FileUploadService
 
-    public Post createPost(Long userId, String postType, MultipartFile imageFile, MultipartFile videoFile, String description, String privacySetting,String postVisibility) throws IOException {
+    public Post createPost(Long userId, String postType, MultipartFile imageFile, MultipartFile videoFile, String text, String description, String privacySetting,String postVisibility) throws IOException {
         Post post = new Post();
         PostType type = PostType.valueOf(postType);
         post.setPostType(type);
@@ -47,6 +47,14 @@ public class PostService {
         post.setPostVisibility(postVisibility1);
 
         switch (type) {
+            case TEXT:
+                if(text != null && !text.isEmpty()){
+                    post.setText(text);
+                }else {
+                    throw new IllegalArgumentException("Text required to post.");
+                }
+                break;
+
             case IMAGE:
                 if (imageFile != null && !imageFile.isEmpty()) {
                     String imageUrl = fileUploadService.uploadFile(imageFile);
@@ -92,6 +100,7 @@ public class PostService {
                     post.getDescription(),   // Post description
                     post.getImageUrl(),      // Image URL
                     post.getVideoUrl(),      // Video URL
+                    post.getText(),
                     post.getPrivacySetting().name(), // Privacy setting as a string
                     post.getCreatedAt(),      // Creation timestamp
                     post.getPostType(),
@@ -121,6 +130,7 @@ public class PostService {
                     post.getDescription(),
                     post.getImageUrl(),
                     post.getVideoUrl(),
+                    post.getText(),
                     post.getPrivacySetting().name(),
                     post.getCreatedAt(),
                     post.getPostType(),
@@ -144,6 +154,7 @@ public class PostService {
                 post.getDescription(),
                 post.getImageUrl(),
                 post.getVideoUrl(),
+                post.getText(),
                 post.getPrivacySetting().name(),
                 post.getCreatedAt(),
                 post.getPostType(),
@@ -166,6 +177,7 @@ public class PostService {
                 post.getDescription(),
                 post.getImageUrl(),
                 post.getVideoUrl(),
+                post.getText(),
                 post.getPrivacySetting().name(),
                 post.getCreatedAt(),
                 post.getPostType(),
@@ -188,6 +200,7 @@ public class PostService {
                 post.getDescription(),
                 post.getImageUrl(),
                 post.getVideoUrl(),
+                post.getText(),
                 post.getPrivacySetting().name(),
                 post.getCreatedAt(),
                 post.getPostType(),
@@ -235,6 +248,7 @@ public class PostService {
                 post.getDescription(),
                 post.getImageUrl(),
                 post.getVideoUrl(),
+                post.getText(),
                 post.getPrivacySetting().name(),
                 post.getCreatedAt(),
                 post.getPostType(),
@@ -298,6 +312,7 @@ public class PostService {
                 post.getDescription(),
                 post.getImageUrl(),
                 post.getVideoUrl(),
+                post.getText(),
                 post.getPrivacySetting().name(),
                 post.getCreatedAt(),
                 post.getPostType(),
