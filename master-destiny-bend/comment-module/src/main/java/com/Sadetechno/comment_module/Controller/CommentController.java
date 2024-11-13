@@ -78,12 +78,12 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(commentStatus);
     }
     @PostMapping("/comment-reels")
-    public ResponseEntity<CommentReels> createCommentForReels(
-            @RequestParam("reelsId") Long reelsId,
-            @RequestParam("userId") Long userId ,
-            @RequestParam("textContent")String textContent){
-        CommentReels commentReels = commentReelsService.createCommentForReels(reelsId, userId, textContent);
-        return ResponseEntity.status(HttpStatus.CREATED).body(commentReels);
+    public ResponseEntity<CommentReelsResponse> createCommentForReels(
+            @RequestParam(value = "file",required = false) MultipartFile file,
+            @RequestParam("request") String requestJson) throws IOException {
+        CommentReelsRequest request = new ObjectMapper().readValue(requestJson,CommentReelsRequest.class);
+        CommentReelsResponse createdComment = commentReelsService.createCommentForReels(request, file);
+        return new ResponseEntity<>(createdComment, HttpStatus.OK);
     }
 
     @GetMapping("/post/{postId}")
